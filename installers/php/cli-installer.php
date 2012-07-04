@@ -183,7 +183,7 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 		$system_salt   = md5($user_email . time());
 		$user_password = getenv("DIY_PASSWORD");
 		$password_hash = hash_hmac('sha256', $user_password, $system_salt);
-	
+
 		$data = array(
 			'email_address' => $user_email,
 			'password'      => $password_hash,
@@ -198,7 +198,31 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 			$q = $pdo->prepare($query);
 			$success = $q->execute($data);
 		} catch(PDOException $e) {  
-			echo "\nOh. Shit. Something's wrong. Couldn't add the user to the database. $e\n\n";
+			echo "\nOh. Shit. Something's wrong. Couldn't add $email to the database. $e\n\n";
+			exit(1);
+			break;
+		}
+
+        $admin_password = getenv("DIY_ADMIN_PASSWORD");
+        $user_email     = 'root@localhost';
+		$salt           = md5($user_email . time());
+		$password_hash  = hash_hmac('sha256', $admin_password, $salt);
+
+		$data = array(
+			'email_address' => $user_email,
+			'password'      => $password_hash,
+			'is_admin'      => true,
+			'api_key'       => '42',
+			'api_secret'    => '43',
+			'creation_date' => time()
+		);
+		$query = "INSERT INTO people (email_address,password,is_admin,api_key,api_secret,creation_date) VALUES (:email_address,:password,:is_admin,:api_key,:api_secret,:creation_date)";
+		
+		try {  
+			$q = $pdo->prepare($query);
+			$success = $q->execute($data);
+		} catch(PDOException $e) {  
+			echo "\nOh. Shit. Something's wrong. Couldn't add $email to the database. $e\n\n";
 			exit(1);
 			break;
 		}
