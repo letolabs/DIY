@@ -140,8 +140,8 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 		}
 	} else if ($db_engine == 'sqlite') {
 		// if the file exists already, rename it as a backup
-		if (file_exists($installer_root . '/../../framework/db/cashmusic_test.sqlite')) {
-			rename($installer_root . '/../../framework/db/cashmusic_test.sqlite',$installer_root . '/../../framework/db/cashmusic_test.sqlite.pretest.bak');
+		if (file_exists($installer_root . '/../../framework/db/cashmusic.sqlite')) {
+			rename($installer_root . '/../../framework/db/cashmusic.sqlite',$installer_root . '/../../framework/db/cashmusic.sqlite.pretest.bak');
 		} else {
 			// if the directory was never created then create it now
 			if (!file_exists($installer_root . '/../../framework/db')) {
@@ -151,9 +151,9 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 		
 		// connect to the new db...will create if not found
 		try {
-			$pdo = new PDO ('sqlite:' . $installer_root . '/../../framework/db/cashmusic_test.sqlite');
+			$pdo = new PDO ('sqlite:' . $installer_root . '/../../framework/db/cashmusic.sqlite');
 			$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-			chmod($installer_root . '/../../framework/db/cashmusic_test.sqlite',0755);
+			chmod($installer_root . '/../../framework/db/cashmusic.sqlite',0755);
 		} catch (PDOException $e) {
 			echo "\nOh. Shit. Something's wrong: Couldn't connect to the database. $e\n\n";
 			exit(1);
@@ -223,7 +223,7 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 			if (
 				findReplaceInFile($installer_root.'/../../framework/php/settings/cashmusic.ini.php','driver = "mysql','driver = "sqlite') &&
 				findReplaceInFile($installer_root.'/../../framework/php/settings/cashmusic.ini.php','debug = 0','debug = 1') &&
-				findReplaceInFile($installer_root.'/../../framework/php/settings/cashmusic.ini.php','database = "cashmusic','database = "cashmusic_test.sqlite') &&
+				findReplaceInFile($installer_root.'/../../framework/php/settings/cashmusic.ini.php','database = "cashmusic','database = "cashmusic.sqlite') &&
 				findReplaceInFile($installer_root.'/../../framework/php/settings/cashmusic.ini.php','apilocation = "http://localhost:8888/interfaces/php/api/','apilocation = "'.$test_url.'/interfaces/php/api/') &&
 				findReplaceInFile($installer_root.'/../../framework/php/settings/cashmusic.ini.php','salt = "I was born of sun beams; Warming up our limbs','salt = "' . $system_salt)
 			) {
