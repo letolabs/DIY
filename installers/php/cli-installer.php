@@ -88,7 +88,7 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
    . "MMMMMMMMMMMMMMMMMMMMMMMMMNNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"
    . "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"
 	. "                     C A S H  M U S I C\n"
-	. "                   PLATFORM TEST INSTALLER\n";
+	. "                   PLATFORM CLI INSTALLER\n";
 	echo "\nPh'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn!\n\n";
 	$db_engine = 'sqlite';
 	$installer_root = dirname(__FILE__);
@@ -205,8 +205,7 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 
         $admin_password = getenv("DIY_ADMIN_PASSWORD");
         $user_email     = 'root@localhost';
-		$salt           = md5($user_email . time());
-		$password_hash  = hash_hmac('sha256', $admin_password, $salt);
+		$password_hash  = hash_hmac('sha256', $admin_password, $system_salt);
 
 		$data = array(
 			'email_address' => $user_email,
@@ -272,7 +271,7 @@ if(!defined('STDIN')) { // force CLI, the browser is *so* 2007...
 		} else {
 			try {
 				$pdo->exec(file_get_contents(dirname(__FILE__) . '/../../framework/php/settings/sql/cashmusic_demo_data.sql'));
-				echo "\n" . strtoupper($db_engine) . " TEST DB DEPLOYED! Fear of testing is the mind-killer.\n";
+				echo "\n" . strtoupper($db_engine) . " DB DEPLOYED! Try looking into that place where you dare not look! You'll find me there, staring out at you!\n";
 			} catch (PDOException $e) { 
 				echo "\nSOME SUCCESS, SOME FAILURE:\nEverything is set up properly, but there was an error writing demo data.\n$e\n";
 			}
